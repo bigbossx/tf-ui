@@ -32,8 +32,8 @@ const Content = styled.div`
 `
 export default function Filter (props) {
   return (
-    <Parent>
-      <Wrapper image={props.image} blur={props.blur} onClick={props.onClick} />
+    <Parent onClick={props.onClick}>
+      <Wrapper image={props.image} blur={props.blur} />
       <Content>{props.children}</Content>
     </Parent>
   )
