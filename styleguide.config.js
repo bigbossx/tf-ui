@@ -15,7 +15,7 @@ module.exports = {
   styleguideDir: 'dist-docs',
   ribbon: {
     url: 'https://gitlab.com/TF_lV/tf-ui',
-    text: 'Folk me on Github',
+    text: 'Folk me on Gitlab',
   },
   moduleAliases: {
     'tf-ui': path.resolve(__dirname, 'src'),
