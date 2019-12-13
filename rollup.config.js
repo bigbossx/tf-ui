@@ -9,43 +9,37 @@ import packageJSON from './package.json';
 
 const minifyExtension = pathToFile => pathToFile.replace(/\.js$/, '.min.js');
 const input = './src/index.js';
-
+const configGenerator = ({ output = {}, plugins = [] }) => {
+  return {
+    input,
+    output: output,
+    plugins: [
+      babel({
+        exclude: 'node_modules/**',
+      }),
+      peerDepsExternal(),//support export peerDependencies
+      resolve(),//external dependency that is required at runtime.
+      commonjs(),//enable CommonJS modules to be included in the bundle
+    ].concat(plugins),
+  }
+}
 export default [
   // CommonJS
-  {
-    input,
+  configGenerator({
     output: {
       file: packageJSON.main,
       format: 'cjs',
     },
-    plugins: [
-      babel({
-        exclude: 'node_modules/**',
-      }),
-      peerDepsExternal(),//support export peerDependencies
-      resolve(),//external dependency that is required at runtime.
-      commonjs(),//enable CommonJS modules to be included in the bundle
-    ],
-  },
-  {
-    input,
+  }),
+  configGenerator({
     output: {
       file: minifyExtension(packageJSON.main),
       format: 'cjs',
     },
-    plugins: [
-      babel({
-        exclude: 'node_modules/**',
-      }),
-      peerDepsExternal(),//support export peerDependencies
-      resolve(),//external dependency that is required at runtime.
-      commonjs(),//enable CommonJS modules to be included in the bundle
-      uglify(),
-    ],
-  },
+    plugins: [uglify()],
+  }),
   // UMD
-  {
-    input,
+  configGenerator({
     output: {
       file: packageJSON.browser,
       format: 'umd',
@@ -56,17 +50,8 @@ export default [
         '@emotion/core': 'core',
       },
     },
-    plugins: [
-      babel({
-        exclude: 'node_modules/**',
-      }),
-      peerDepsExternal(),
-      resolve(),
-      commonjs(),
-    ],
-  },
-  {
-    input,
+  }),
+  configGenerator({
     output: {
       file: minifyExtension(packageJSON.browser),
       format: 'umd',
@@ -77,48 +62,22 @@ export default [
         '@emotion/core': 'core',
       },
     },
-    plugins: [
-      babel({
-        exclude: 'node_modules/**',
-      }),
-      peerDepsExternal(),
-      resolve(),
-      commonjs(),
-      terser(),
-    ],
-  },
+    plugins: [terser()],
+  }),
   // ES
-  {
-    input,
+  configGenerator({
     output: {
       file: packageJSON.module,
       format: 'es',
       exports: 'named',
     },
-    plugins: [
-      babel({
-        exclude: 'node_modules/**',
-      }),
-      peerDepsExternal(),
-      resolve(),
-      commonjs(),
-    ],
-  },
-  {
-    input,
+  }),
+  configGenerator({
     output: {
       file: minifyExtension(packageJSON.module),
       format: 'es',
       exports: 'named',
     },
-    plugins: [
-      babel({
-        exclude: 'node_modules/**',
-      }),
-      peerDepsExternal(),
-      resolve(),
-      commonjs(),
-      terser(),
-    ],
-  },
+    plugins: [terser()],
+  }),
 ];

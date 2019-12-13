@@ -11,9 +11,13 @@ module.exports = {
       ],
     },
   },
-  title: 'React Sample Components Library',
+  title: 'tf-ui',
   styleguideDir: 'dist-docs',
+  ribbon: {
+    url: 'https://gitlab.com/TF_lV/tf-ui',
+    text: 'Folk me on Github',
+  },
   moduleAliases: {
-    'react-sample-components-library': path.resolve(__dirname, 'src'),
+    'tf-ui': path.resolve(__dirname, 'src'),
   },
 };
